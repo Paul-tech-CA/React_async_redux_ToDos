@@ -1,0 +1,16 @@
+{
+  "todos": [
+    {
+      "id": 2,
+      "label": "I hate Redux!"
+    },
+    {
+      "label": "I like React!",
+      "id": 3
+    },
+    {
+      "label": "I adore Developing !",
+      "id": 4
+    }
+  ]
+}
