@@ -1,33 +1,36 @@
 import { createAction, nanoid } from "@reduxjs/toolkit";
 
-const addToDo = createAction("todos/add", label => {
+const addToDo = createAction("todos/add", (label) => {
   return {
     payload: {
       id: nanoid(),
-      label
-    }
+      label,
+    },
   };
 });
 
 const removeToDo = createAction("todos/remove");
 const filterChange = createAction("todos/filter");
 
-//getAll
+// getAll
 const fetchTodosRequested = createAction("todos/fetch-todos-requested");
 const fetchTodosSuccess = createAction("todos/fetch-todos-success");
 const fetchTodosFailure = createAction("todos/fetch-todos-failure");
 
-//add
+// create
 const addTodoRequested = createAction("todos/add-todo-requested");
 const addTodoSuccess = createAction("todos/add-todo-success");
 const addTodoFailure = createAction("todos/add-todo-failure");
 
-//remove
+// delete
 const removeTodoRequested = createAction("todos/remove-todo-requested");
 const removeTodoSuccess = createAction("todos/remove-todo-success");
 const removeTodoFailure = createAction("todos/remove-todo-failure");
 
-// const fetchTodosAction = createAction("todos/fetch-todos");
+// toggle
+const toggleCompletedRequest = createAction("todos/toggleCompletedRequest");
+const toggleCompletedSuccess = createAction("todos/toggleCompletedSuccess");
+const toggleCompletedFailure = createAction("todos/toggleCompletedFailure");
 
 export {
   addToDo,
@@ -36,11 +39,13 @@ export {
   fetchTodosRequested,
   fetchTodosSuccess,
   fetchTodosFailure,
+  addTodoFailure,
   addTodoRequested,
   addTodoSuccess,
-  addTodoFailure,
-  removeTodoRequested,
+  removeTodoFailure,
   removeTodoSuccess,
-  removeTodoFailure
-  // fetchTodosAction
+  removeTodoRequested,
+  toggleCompletedRequest,
+  toggleCompletedSuccess,
+  toggleCompletedFailure,
 };

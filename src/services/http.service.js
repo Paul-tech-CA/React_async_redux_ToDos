@@ -2,4 +2,6 @@ const fetchTodos = () => {
 
 }
 
-export fetchTodos;
+export {
+    fetchTodos
+}

@@ -1,7 +1,7 @@
-import todos from "./todos/todosReducer";
+import todos from "./todos/todos-reducer";
 
 const rootReducer = {
-  todos
+  todos,
 };
 
 export default rootReducer;

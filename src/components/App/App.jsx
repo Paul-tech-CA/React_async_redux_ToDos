@@ -1,16 +1,26 @@
 import React, { PureComponent } from "react";
-import { connect } from "react-redux";
-import {
-  // addToDo, removeToDo,
-  filterChange,
-  fetchTodosAction
-} from "../../redux/todos/todosActions";
-import { fetchTodos, addTodo, deleteTodo } from "../../redux/todos/todosOperations";
-import Loader from "../loader/Loader";
+// import { connect } from "react-redux";
+// import {
+//   // addToDo,
+//   // removeToDo,
+//   filterChange,
+// } from "../../redux/todos/todos-actions";
+// import {
+//   fetchTodos,
+//   addToDo,
+//   deleteTodo,
+// } from "../../redux/todos/todos-operations";
+import Loader from "../Loader";
+// import {
+//   getFilteredTodos,
+//   getError,
+//   getLoading,
+//   getFilter,
+// } from "../../redux/todos/todos-selectors";
 
 class App extends PureComponent {
   state = {
-    label: ""
+    label: "",
   };
 
   componentDidMount() {
@@ -18,26 +28,42 @@ class App extends PureComponent {
     this.props.fetchTodos();
   }
 
-  onHandleChange = event => {
-    this.setState({ label: event.target.value });
+  handleChange = (event) => {
+    this.setState({
+      label: event.target.value,
+    });
   };
 
-  onSubmit = event => {
+  onSubmit = (event) => {
     event.preventDefault();
     const { label } = this.state;
-    this.props.addTodo(label);
-    this.setState({ label: "" });
+    this.props.addToDo(label);
+    this.setState({
+      label: "",
+    });
   };
 
-  onHandleDelete = event => {
+  onHandleDelete = (event) => {
     const { id } = event.target.dataset;
     this.props.deleteTodo(id);
   };
 
-  onFilterChange = event => {
+  onFilterChange = (event) => {
     const { value } = event.target;
     const { filterChange } = this.props;
     filterChange(value);
+  };
+
+  renderStats = () => {
+    const { completedCount, noCompletedCount, todoCount } = this.props;
+    return (
+      <div className="mt-3 shadow-sm">
+        <h3>
+          Выполнено {completedCount} осталось {noCompletedCount}
+        </h3>
+        <h3>Всего: {todoCount}</h3>
+      </div>
+    );
   };
 
   render() {
@@ -45,13 +71,14 @@ class App extends PureComponent {
       <div className="h-100 w-full flex items-center justify-center bg-teal-lightest font-sans">
         <div className="bg-white rounded shadow p-4 m-4 w-full lg:w-3/4 lg:max-w-2xl">
           <div className="mb-4">
-            <h1 className="text-grey-darkest">Todo List:</h1>
+            <h1 className="text-grey-darkest">Todos List:</h1>
+            {this.renderStats()}
             <form className="flex mt-4" onSubmit={this.onSubmit}>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker "
+                className="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker"
                 placeholder="Add Todo"
+                onChange={this.handleChange}
                 value={this.state.label}
-                onChange={this.onHandleChange}
               />
               <button className="flex-no-shrink p-2 border-2 rounded text-blue-500 border-blue-400 hover:text-white hover:bg-blue-400">
                 Add
@@ -59,17 +86,21 @@ class App extends PureComponent {
             </form>
           </div>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker mb-5"
-            placeholder="Add Todo"
-            value={this.props.filter}
+            className="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker mb-6"
+            placeholder="Filter Todo"
             onChange={this.onFilterChange}
+            value={this.props.filter}
           />
           <div>
             {this.props.error && (
-              <div class="flex bg-red-500 max-w-sm mb-4">
-                <div class="w-16 bg-red">
-                  <div class="p-4">
-                    <svg class="h-8 w-8 text-white fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <div className="flex bg-red-500 max-w-sm mb-4">
+                <div className="w-16 bg-red">
+                  <div className="p-4">
+                    <svg
+                      className="h-8 w-8 text-white fill-current"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 512 512"
+                    >
                       <path
                         d="M437.019 74.981C388.667 26.629 324.38 0 256 0S123.333 26.63 74.981 74.981 0 187.62 0 256s26.629 132.667 74.981 181.019C123.332 485.371 187.62 512 256 512s132.667-26.629 181.019-74.981C485.371 388.667 512 324.38 512 256s-26.629-132.668-74.981-181.019zM256 470.636C137.65 470.636 41.364 374.35 41.364 256S137.65 41.364 256 41.364 470.636 137.65 470.636 256 374.35 470.636 256 470.636z"
                         fill="#FFF"
@@ -85,28 +116,41 @@ class App extends PureComponent {
                     </svg>
                   </div>
                 </div>
-                <div class="w-auto text-black opacity-75 items-center p-4">
-                  <span class="text-lg font-bold pb-4">Heads Up!</span>
-                  <p class="leading-tight">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, nemo!</p>
+                <div className="w-auto text-black opacity-75 items-center p-4">
+                  <span className="text-lg font-bold pb-4">Heads Up!</span>
+                  <p className="leading-tight">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Aperiam, nemo!
+                  </p>
                 </div>
               </div>
             )}
-            {this.props.loading && <Loader />}
-            {this.props.todos.map(({ id, label }) => (
-              <div key={id} className="flex mb-4 items-center">
-                <p className="w-full text-grey-darkest">{label}</p>
-                <button className="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-green-400 border-green-400 hover:bg-green-400">
-                  Done
-                </button>
-                <button
-                  className="flex-no-shrink p-2 ml-2 border-2 rounded text-red-500 border-red-500 hover:text-white hover:bg-red-500"
-                  data-id={id}
-                  onClick={this.onHandleDelete}
-                >
-                  Remove
-                </button>
+
+            {this.props.todos.map(({ label, id, completed }) => (
+              <div key={id} className="flex justify-between mb-4 items-center">
+                <p className="text-grey-darkest">{label}</p>
+                <div>
+                  <button
+                    className={`flex-no-shrink flex-nowrap p-2 ml-2 border-2 rounded ${
+                      completed
+                        ? "hover:text-white text-green-400 border-green-400 hover:bg-green-400"
+                        : "hover:text-white text-blue-400 border-blue-400 hover:bg-blue-400"
+                    }`}
+                    onClick={() => this.props.toggleCompleted(id, !completed)}
+                  >
+                    {completed ? "Done" : "Not done"}
+                  </button>
+                  <button
+                    className="flex-no-shrink p-2 ml-2 border-2 rounded text-red-500 border-red-500 hover:text-white hover:bg-red-500"
+                    data-id={id}
+                    onClick={this.onHandleDelete}
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
             ))}
+            {this.props.loading && <Loader />}
           </div>
         </div>
       </div>
@@ -114,37 +158,30 @@ class App extends PureComponent {
   }
 }
 
-const getFilteredTodos = state => {
-  const { items, filter } = state.todos;
-  return items.filter(item => new RegExp(filter, "i").test(item.label));
-};
-
-const mapStateToProps = state => ({
-  todos: getFilteredTodos(state),
-  filter: state.todos.filter,
-  loading: state.todos.loading,
-  error: state.todos.error
-});
-
-// const fetchTodos = dispatch => async () => {
-//   const f = await fetch(`http://localhost:3004/todos`);
-//   const data = await f.json();
-//   console.log(data, "fetch_data");
-//   dispatch(fetchTodosAction());
+// const mapStateToProps = (state) => ({
+//   todos: getFilteredTodos(state),
+//   filter: getFilter(state),
+//   loading: getLoading(state),
+//   error: getError(state),
+// });
+//
+// // const fetchTodos = (dispatch) => async () => {
+// //   const f = await fetch(`http://localhost:3004/todos`);
+// //   const data = await f.json();
+// //   dispatch(fetchTodosAction());
+// // };
+//
+// const mapDispatchToProps = {
+//   addToDo,
+//   deleteTodo,
+//   fetchTodos,
+//   filterChange,
 // };
-const mapDispatchToProps = {
-  addTodo,
-  deleteTodo,
-  filterChange,
-  fetchTodos
+//
+// // const mapDispatchToProps = (dispatch) => {
+// //   return {
+// //     fetchTodos: () => fetchTodos(dispatch)(),
+// //   };
+// // };
 
-  // fetchTodos
-};
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     fetchTodos: () => fetchTodos(dispatch)()
-//   };
-// };
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
