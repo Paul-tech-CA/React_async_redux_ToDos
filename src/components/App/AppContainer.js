@@ -6,6 +6,8 @@ import {
   getFilteredTodos,
   getLoading,
   getNoCompleted,
+  getSelectedItems,
+  getSelectedItemsCount,
   getTodosCount,
 } from "../../redux/todos/todos-selectors";
 import {
@@ -14,13 +16,21 @@ import {
   fetchTodos,
   toggleCompleted,
 } from "../../redux/todos/todos-operations";
-import { filterChange } from "../../redux/todos/todos-actions";
+
+import {
+  filterChange,
+  unselectItem,
+  selectItem,
+  deleteItems,
+} from "../../redux/todos/todos-actions";
 
 import App from "./App";
 
 const mapStateToProps = (state) => ({
   todos: getFilteredTodos(state),
   todoCount: getTodosCount(state),
+  selectItems: getSelectedItems(state),
+  selectedItemsCount: getSelectedItemsCount(state),
   completedCount: getCompletedCount(state),
   noCompletedCount: getNoCompleted(state),
   filter: getFilter(state),
@@ -40,6 +50,9 @@ const mapDispatchToProps = {
   fetchTodos,
   filterChange,
   toggleCompleted,
+  selectItem,
+  unselectItem,
+  deleteItems,
 };
 
 // const mapDispatchToProps = (dispatch) => {

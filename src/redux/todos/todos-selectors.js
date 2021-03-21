@@ -2,6 +2,8 @@ import { createSelector } from "@reduxjs/toolkit";
 
 const getTodos = (state) => state.todos.items;
 const getTodosCount = (state) => state.todos.items.length;
+const getSelectedItemsCount = (state) => state.todos.selectedItems.length;
+const getSelectedItems = (state) => state.todos.selectedItems;
 const getFilter = (state) => state.todos.filter;
 const getLoading = (state) => state.todos.loading;
 const getError = (state) => state.todos.error;
@@ -48,4 +50,6 @@ export {
   getCompletedCount,
   getNoCompleted,
   getTodosCount,
+  getSelectedItemsCount,
+  getSelectedItems,
 };

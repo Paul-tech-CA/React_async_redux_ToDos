@@ -1,22 +1,7 @@
 import React, { PureComponent } from "react";
-// import { connect } from "react-redux";
-// import {
-//   // addToDo,
-//   // removeToDo,
-//   filterChange,
-// } from "../../redux/todos/todos-actions";
-// import {
-//   fetchTodos,
-//   addToDo,
-//   deleteTodo,
-// } from "../../redux/todos/todos-operations";
 import Loader from "../Loader";
-// import {
-//   getFilteredTodos,
-//   getError,
-//   getLoading,
-//   getFilter,
-// } from "../../redux/todos/todos-selectors";
+import TrashIcon from "../../icons/TrashIcon";
+import { deleteItems } from "../../redux/todos/todos-actions";
 
 class App extends PureComponent {
   state = {
@@ -55,15 +40,45 @@ class App extends PureComponent {
   };
 
   renderStats = () => {
-    const { completedCount, noCompletedCount, todoCount } = this.props;
+    const {
+      completedCount,
+      noCompletedCount,
+      todoCount,
+      selectedItemsCount,
+      deleteItems,
+      selectItems,
+    } = this.props;
     return (
-      <div className="mt-3 shadow-sm">
-        <h3>
-          Выполнено {completedCount} осталось {noCompletedCount}
-        </h3>
-        <h3>Всего: {todoCount}</h3>
+      <div className="grid grid-cols-2">
+        <div className="mt-3 shadow-sm">
+          <h3>
+            Выполнено {completedCount} осталось {noCompletedCount}
+          </h3>
+          <h3>Всего: {todoCount}</h3>
+        </div>
+        <div className="flex items-center justify-end">
+          <div className="flex">
+            <h3>Выбрано: {selectedItemsCount}</h3>
+            <button
+              className="bg-red-500 text-white px-2 py-2"
+              onClick={() => deleteItems(selectItems)}
+            >
+              <TrashIcon />
+            </button>
+          </div>
+        </div>
       </div>
     );
+  };
+
+  handleChangeCheckbox = ({ target }) => {
+    const { checked, name } = target;
+    const { unselectItem, selectItem } = this.props;
+    if (checked) {
+      selectItem(name);
+    } else {
+      unselectItem(name);
+    }
   };
 
   render() {
@@ -92,53 +107,31 @@ class App extends PureComponent {
             value={this.props.filter}
           />
           <div>
-            {this.props.error && (
-              <div className="flex bg-red-500 max-w-sm mb-4">
-                <div className="w-16 bg-red">
-                  <div className="p-4">
-                    <svg
-                      className="h-8 w-8 text-white fill-current"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512"
-                    >
-                      <path
-                        d="M437.019 74.981C388.667 26.629 324.38 0 256 0S123.333 26.63 74.981 74.981 0 187.62 0 256s26.629 132.667 74.981 181.019C123.332 485.371 187.62 512 256 512s132.667-26.629 181.019-74.981C485.371 388.667 512 324.38 512 256s-26.629-132.668-74.981-181.019zM256 470.636C137.65 470.636 41.364 374.35 41.364 256S137.65 41.364 256 41.364 470.636 137.65 470.636 256 374.35 470.636 256 470.636z"
-                        fill="#FFF"
-                      />
-                      <path
-                        d="M341.22 170.781c-8.077-8.077-21.172-8.077-29.249 0L170.78 311.971c-8.077 8.077-8.077 21.172 0 29.249 4.038 4.039 9.332 6.058 14.625 6.058s10.587-2.019 14.625-6.058l141.19-141.191c8.076-8.076 8.076-21.171 0-29.248z"
-                        fill="#FFF"
-                      />
-                      <path
-                        d="M341.22 311.971l-141.191-141.19c-8.076-8.077-21.172-8.077-29.248 0-8.077 8.076-8.077 21.171 0 29.248l141.19 141.191a20.616 20.616 0 0 0 14.625 6.058 20.618 20.618 0 0 0 14.625-6.058c8.075-8.077 8.075-21.172-.001-29.249z"
-                        fill="#FFF"
-                      />
-                    </svg>
-                  </div>
-                </div>
-                <div className="w-auto text-black opacity-75 items-center p-4">
-                  <span className="text-lg font-bold pb-4">Heads Up!</span>
-                  <p className="leading-tight">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Aperiam, nemo!
-                  </p>
-                </div>
-              </div>
-            )}
-
+            {this.props.error && <h3>Error</h3>}
             {this.props.todos.map(({ label, id, completed }) => (
               <div key={id} className="flex justify-between mb-4 items-center">
-                <p className="text-grey-darkest">{label}</p>
+                <div className="flex">
+                  <label className="inline-flex items-center">
+                    <input
+                      name={id}
+                      type="checkbox"
+                      className="form-checkbox"
+                      onChange={this.handleChangeCheckbox}
+                    />
+                    <span className="ml-2" />
+                  </label>
+                  <p className="text-grey-darkest">{label}</p>
+                </div>
                 <div>
                   <button
                     className={`flex-no-shrink flex-nowrap p-2 ml-2 border-2 rounded ${
-                      completed
+                      !completed
                         ? "hover:text-white text-green-400 border-green-400 hover:bg-green-400"
                         : "hover:text-white text-blue-400 border-blue-400 hover:bg-blue-400"
                     }`}
                     onClick={() => this.props.toggleCompleted(id, !completed)}
                   >
-                    {completed ? "Done" : "Not done"}
+                    {!completed ? "Done" : "Not done"}
                   </button>
                   <button
                     className="flex-no-shrink p-2 ml-2 border-2 rounded text-red-500 border-red-500 hover:text-white hover:bg-red-500"
@@ -157,31 +150,5 @@ class App extends PureComponent {
     );
   }
 }
-
-// const mapStateToProps = (state) => ({
-//   todos: getFilteredTodos(state),
-//   filter: getFilter(state),
-//   loading: getLoading(state),
-//   error: getError(state),
-// });
-//
-// // const fetchTodos = (dispatch) => async () => {
-// //   const f = await fetch(`http://localhost:3004/todos`);
-// //   const data = await f.json();
-// //   dispatch(fetchTodosAction());
-// // };
-//
-// const mapDispatchToProps = {
-//   addToDo,
-//   deleteTodo,
-//   fetchTodos,
-//   filterChange,
-// };
-//
-// // const mapDispatchToProps = (dispatch) => {
-// //   return {
-// //     fetchTodos: () => fetchTodos(dispatch)(),
-// //   };
-// // };
 
 export default App;

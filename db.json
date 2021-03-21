@@ -11,6 +11,11 @@
     {
       "label": "I adore Developing !",
       "id": 4
+    },
+    {
+      "label": "Start work in the it company",
+      "completed": false,
+      "id": 5
     }
   ]
 }

@@ -32,6 +32,11 @@ const toggleCompletedRequest = createAction("todos/toggleCompletedRequest");
 const toggleCompletedSuccess = createAction("todos/toggleCompletedSuccess");
 const toggleCompletedFailure = createAction("todos/toggleCompletedFailure");
 
+//
+const selectItem = createAction("todos/select-item");
+const unselectItem = createAction("todos/unselect-item");
+const deleteItems = createAction("todos/delete-items");
+
 export {
   addToDo,
   removeToDo,
@@ -48,4 +53,7 @@ export {
   toggleCompletedRequest,
   toggleCompletedSuccess,
   toggleCompletedFailure,
+  selectItem,
+  unselectItem,
+  deleteItems,
 };
