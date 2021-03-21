@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/React_async_redux_ToDos/static/css/main.14889cb5.chunk.css",
+    "main.js": "/React_async_redux_ToDos/static/js/main.e6dc948d.chunk.js",
+    "main.js.map": "/React_async_redux_ToDos/static/js/main.e6dc948d.chunk.js.map",
+    "runtime-main.js": "/React_async_redux_ToDos/static/js/runtime-main.c57fc320.js",
+    "runtime-main.js.map": "/React_async_redux_ToDos/static/js/runtime-main.c57fc320.js.map",
+    "static/js/2.38007080.chunk.js": "/React_async_redux_ToDos/static/js/2.38007080.chunk.js",
+    "static/js/2.38007080.chunk.js.map": "/React_async_redux_ToDos/static/js/2.38007080.chunk.js.map",
+    "index.html": "/React_async_redux_ToDos/index.html",
+    "static/css/main.14889cb5.chunk.css.map": "/React_async_redux_ToDos/static/css/main.14889cb5.chunk.css.map",
+    "static/js/2.38007080.chunk.js.LICENSE.txt": "/React_async_redux_ToDos/static/js/2.38007080.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c57fc320.js",
+    "static/js/2.38007080.chunk.js",
+    "static/css/main.14889cb5.chunk.css",
+    "static/js/main.e6dc948d.chunk.js"
+  ]
+}
